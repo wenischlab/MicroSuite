@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package bucket;
+
+service DistanceService{
+    rpc GetNearestNeighbors(NearestNeighborRequest) returns (NearestNeighborResponse) {}
+}
+
+// The request message containing the query point.
+message DataPoint {
+    repeated float data_point = 1;
+}
+
+message MultipleDataPoints{
+    repeated DataPoint multiple_data_points = 1;
+}
+
+message PointIdList {
+    repeated uint32 point_id = 1;
+    uint32 bucket_server_id = 2;
+}
+
+message UtilRequest {
+    bool util_request = 1;
+}
+
+message NearestNeighborRequest {
+    repeated uint64 queries = 1;
+    repeated PointIdList maybe_neighbor_list = 2;
+    uint32 requested_neighbor_count = 3;
+    uint32 bucket_server_id = 4;
+    uint32 shard_size = 5;
+    UtilRequest util_request = 6;
+    uint64 request_id = 7;
+    uint64 index_view = 8;
+}
+
+message TimingDataInMicro{
+    uint64 unpack_bucket_req_time_in_micro = 1;
+    uint64 calculate_knn_time_in_micro = 2;
+    uint64 pack_bucket_resp_time_in_micro = 3;
+    float cpu_util = 4;
+}
+
+message UtilResponse {
+    bool util_present = 1;
+    uint64 user_time = 2;
+    uint64 system_time = 3;
+    uint64 io_time = 4;
+    uint64 idle_time = 5;
+}
+
+message NearestNeighborResponse {
+    repeated PointIdList neighbor_ids = 1;
+    repeated uint64 queries = 2;
+    TimingDataInMicro timing_data_in_micro = 3;
+    UtilResponse util_response = 4;
+    uint64 request_id = 5;
+    uint64 recv_stamp = 6;
+    uint64 send_stamp = 7;
+    uint64 index_view = 8;
+    uint32 bucket_server_id = 9;
+}
+

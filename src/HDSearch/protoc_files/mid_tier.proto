@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+import "google/protobuf/descriptor.proto";
+
+package loadgen_index;
+
+service LoadGenIndex {
+    // Defining service between load generator and index.
+    // Input: Queries, number of nearest neighbors to compute.
+    // Output: K-nn
+    rpc LoadGen_Index (LoadGenRequest) returns (ResponseIndexKnnQueries) {}
+}
+
+
+message UtilRequest {
+    bool util_request = 1;
+}
+
+message LoadGenRequest {
+    repeated uint64 query_id = 1;
+    uint32 number_nearest_neighbors = 2;
+    UtilRequest util_request = 3;
+    bool last_request = 4;
+    uint64 resp_time = 5;
+    bool kill = 6;
+    uint64 request_id = 7;
+    uint32 load = 8;
+}
+
+message MyDefault {
+  repeated uint32 default = 1;
+}
+
+extend google.protobuf.FieldOptions {
+  MyDefault my_default = 123456;
+}
+
+message PointIds {
+    repeated uint32 point_id = 1 [(my_default) = {default: [1, 2, 3]}];
+}
+
+message Util {
+    uint64 user_time = 1;
+    uint64 system_time = 2;
+    uint64 io_time = 3;
+    uint64 idle_time = 4;
+}
+
+message UtilResponse {
+    bool util_present = 1;
+    repeated Util bucket_util = 2;
+    Util index_util = 3;
+}
+
+message ResponseIndexKnnQueries {
+    repeated PointIds neighbor_ids = 1;
+    uint64 create_index_req_time = 3;
+    uint64 unpack_loadgen_req_time = 4;
+    uint64 update_index_util_time = 5;
+    uint64 get_point_ids_time = 6;
+    uint64 get_bucket_responses_time = 7;
+    uint64 create_bucket_req_time = 8;
+    uint64 unpack_bucket_resp_time = 9;
+    uint64 unpack_bucket_req_time = 10;
+    uint64 calculate_knn_time = 11;
+    uint64 pack_bucket_resp_time = 12;
+    uint64 merge_time = 13;
+    uint64 pack_index_resp_time = 14;
+    // TODO A.S Temporary - REMOVE
+    float percent_data_sent = 15;
+    uint32 number_of_bucket_servers = 16;
+    UtilResponse util_response = 17;
+    uint64 resp_time = 18;
+    uint64 index_time = 19;
+    uint64 start_stamp = 20;
+    uint64 end_stamp = 21;
+    uint64 request_id = 22;
+    uint64 num_inline = 23;
+    uint64 num_workers = 24;
+    uint64 num_resp = 25; 
+    bool kill_ack = 26;
+}
