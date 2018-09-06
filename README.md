@@ -9,4 +9,4 @@
 
 µSuite was originally written by Akshitha Sriraman at the University of Michigan, and per the University of Michigan policy, the copyright of this original code remains with the University of Michigan.
 
-If you use this software in your work, we request that you cite the µSuite paper ("μSuite: A Benchmark Suite for Microservices", Sriraman and Wenisch, IISWC, September 2018), and that you send us a citation of your work.
+If you use this software in your work, we request that you cite the µSuite paper ("μSuite: A Benchmark Suite for Microservices", Akshitha Sriraman and Thomas F. Wenisch, IEEE International Symposium on Workload Characterization, September 2018), and that you send us a citation of your work.
