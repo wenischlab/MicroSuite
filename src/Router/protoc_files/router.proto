@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+import "google/protobuf/descriptor.proto";
+
+package router;
+
+service RouterService {
+    // Defining service between load generator and index.
+    // Input: Queries, number of nearest neighbors to compute.
+    // Output: K-nn
+    rpc Router (RouterRequest) returns (LookupResponse) {}
+}
+
+
+message UtilRequest {
+    bool util_request = 1;
+}
+
+message RouterRequest {
+    string key = 1;
+    string value = 2;
+    uint32 operation = 3;
+    UtilRequest util_request = 4;
+    bool last_request = 5;
+    uint64 resp_time = 6;
+    bool kill = 7;
+    uint64 request_id = 8;
+    uint32 load = 9;
+}
+
+message Util {
+    uint64 user_time = 1;
+    uint64 system_time = 2;
+    uint64 io_time = 3;
+    uint64 idle_time = 4;
+}
+
+message UtilResponse {
+    bool util_present = 1;
+    repeated Util lookup_srv_util = 2;
+    Util router_util = 3;
+}
+
+message LookupResponse {
+    uint64 create_router_req_time = 1;
+    uint64 unpack_router_req_time = 2;
+    uint64 update_router_util_time = 3;
+    uint64 get_lookup_srv_responses_time = 5;
+    uint64 create_lookup_srv_req_time = 6;
+    uint64 unpack_lookup_srv_resp_time = 7;
+    uint64 unpack_lookup_srv_req_time = 8;
+    uint64 lookup_srv_time = 9;
+    uint64 pack_lookup_srv_resp_time = 10;
+    uint64 pack_router_resp_time = 11;
+    uint32 number_of_lookup_servers = 12;
+    UtilResponse util_response = 13;
+    uint64 resp_time = 14;
+    uint64 router_time = 15;
+    uint64 start_stamp = 16;
+    uint64 end_stamp = 17;
+    uint64 request_id = 18;
+    uint64 num_inline = 19;
+    uint64 num_workers = 20;
+    uint64 num_resp = 21;
+    bool kill_ack = 22;
+    string value = 23;
+    uint64 merge_time = 24; 
+}

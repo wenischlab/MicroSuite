@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package lookup;
+
+service LookupService{
+    rpc KeyLookup(Key) returns (Value) {}
+}
+
+// The request message containing the query point.
+
+message UtilRequest {
+    bool util_request = 1;
+}
+
+message Key {
+    uint32 operation = 1;
+    string key = 2;
+    string value = 3;
+    UtilRequest util_request = 4;
+    uint64 request_id = 5;
+    uint64 index_view = 6;
+    uint32 lookup_server_id = 7;
+}
+
+message TimingDataInMicro{
+    uint64 unpack_lookup_srv_req_time_in_micro = 1;
+    uint64 lookup_srv_time_in_micro = 2;
+    uint64 pack_lookup_srv_resp_time_in_micro = 3;
+    float cpu_util = 4;
+}
+
+message UtilResponse {
+    bool util_present = 1;
+    uint64 user_time = 2;
+    uint64 system_time = 3;
+    uint64 io_time = 4;
+    uint64 idle_time = 5;
+}
+
+message Value {
+    string value = 1;
+    TimingDataInMicro timing_data_in_micro = 2;
+    UtilResponse util_response = 3;
+    uint64 request_id = 4;
+    uint64 recv_stamp = 5;
+    uint64 send_stamp = 6;
+    uint64 index_view = 7;
+    uint32 bucket_server_id = 8;
+}
+
