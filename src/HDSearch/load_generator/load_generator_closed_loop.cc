@@ -347,7 +347,7 @@ class LoadGenIndexClient {
                     (util_requests-1));
             std::cout << std::endl;
                 global_stats_mutex.unlock();
-                std::string s = "/home/liush/highdimensionalsearch/load_generator/kill_index_server_empty " + ip;
+                std::string s = "./kill_index_server_empty " + ip;
                 char* cmd = new char[s.length() + 1];
                 std::strcpy(cmd, s.c_str());
                 ExecuteShellCommand(cmd);

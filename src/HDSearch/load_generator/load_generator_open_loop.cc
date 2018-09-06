@@ -14,7 +14,7 @@
 #include "helper_files/mid_tier_client_helper.h"
 #include "helper_files/timing.h"
 
-#include "index_service/src/atomics.cpp"
+#include "mid_tier_service/src/atomics.cpp"
 
 using grpc::Channel;
 using grpc::ClientAsyncResponseReader;
@@ -203,7 +203,7 @@ class LoadGenIndexClient {
 
                 } else {
                     sleep(2);
-                    std::string s = "/home/akshitha/highdimensionalsearch/load_generator/kill_index_server_empty " + ip;
+                    std::string s = "./kill_index_server_empty " + ip;
                     char* cmd = new char[s.length() + 1];
                     std::strcpy(cmd, s.c_str());
                     ExecuteShellCommand(cmd);
