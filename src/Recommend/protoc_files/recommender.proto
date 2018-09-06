@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+import "google/protobuf/descriptor.proto";
+
+package recommender;
+
+service RecommenderService {
+    // Defining service between load generator and index.
+    // Input: Queries, number of nearest neighbors to compute.
+    // Output: K-nn
+    rpc Recommender (RecommenderRequest) returns (RecommenderResponse) {}
+}
+
+
+message UtilRequest {
+    bool util_request = 1;
+}
+
+message RecommenderRequest {
+    uint32 user = 1;
+    uint32 item = 2;
+    UtilRequest util_request = 4;
+    bool last_request = 5;
+    uint64 resp_time = 6;
+    bool kill = 7;
+    uint64 request_id = 8;
+    uint32 load = 9;
+}
+
+message Util {
+    uint64 user_time = 1;
+    uint64 system_time = 2;
+    uint64 io_time = 3;
+    uint64 idle_time = 4;
+}
+
+message UtilResponse {
+    bool util_present = 1;
+    repeated Util cf_srv_util = 2;
+    Util recommender_util = 3;
+}
+
+message RecommenderResponse {
+    float rating = 25;
+    uint64 create_recommender_req_time = 1;
+    uint64 unpack_recommender_req_time = 2;
+    uint64 update_recommender_util_time = 3;
+    uint64 get_cf_srv_responses_time = 5;
+    uint64 create_cf_srv_req_time = 6;
+    uint64 unpack_cf_srv_resp_time = 7;
+    uint64 unpack_cf_srv_req_time = 8;
+    uint64 calculate_cf_srv_time = 9;
+    uint64 pack_cf_srv_resp_time = 10;
+    uint64 pack_recommender_resp_time = 11;
+    uint32 number_of_cf_servers = 12;
+    UtilResponse util_response = 13;
+    uint64 resp_time = 14;
+    uint64 recommender_time = 15;
+    uint64 start_stamp = 16;
+    uint64 end_stamp = 17;
+    uint64 request_id = 18;
+    uint64 num_inline = 19;
+    uint64 num_workers = 20;
+    uint64 num_resp = 21;
+    bool kill_ack = 22;
+    string value = 23;
+    uint64 merge_time = 24; 
+    uint64 total_calc_time = 26;
+}

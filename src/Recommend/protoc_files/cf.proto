@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package collaborative_filtering;
+
+service CFService{
+    rpc CF(CFRequest) returns (CFResponse) {}
+}
+
+// The request message containing the query point.
+
+message UtilRequest {
+    bool util_request = 1;
+}
+
+message CFRequest {
+    uint32 user = 1;
+    uint32 item = 2;
+    UtilRequest util_request = 4;
+    uint64 request_id = 5;
+    uint64 recommender_view = 6;
+    uint32 cf_server_id = 7;
+}
+
+message TimingDataInMicro{
+    uint64 unpack_cf_srv_req_time_in_micro = 1;
+    uint64 calculate_cf_srv_time_in_micro = 2;
+    uint64 pack_cf_srv_resp_time_in_micro = 3;
+    uint64 bucket_time = 5;
+    float cpu_util = 4;
+}
+
+message UtilResponse {
+    bool util_present = 1;
+    uint64 user_time = 2;
+    uint64 system_time = 3;
+    uint64 io_time = 4;
+    uint64 idle_time = 5;
+}
+
+message CFResponse {
+    float rating = 1;
+    TimingDataInMicro timing_data_in_micro = 2;
+    UtilResponse util_response = 3;
+    uint64 request_id = 4;
+    uint64 recv_stamp = 5;
+    uint64 send_stamp = 6;
+    uint64 recommender_view = 7;
+    uint32 cf_server_id = 8;
+}
+
