@@ -14,6 +14,8 @@
 #include "mid_tier_service/service/helper_files/timing.h"
 #include "mid_tier_service/service/helper_files/utils.h"
 
+#define FIXEDCOMP 10
+
 using namespace flann;
 
 using grpc::Server;
@@ -578,7 +580,12 @@ class DistanceServiceClient {
                 /* It is possible for no point IDs to be returned for a query.
                    i.e the query did not hash to any bucket.
                    LSH parameters must be chosen in a better fashion in such cases.*/
-                point_ids_for_all_bucket_servers[i][0].resize(2);
+                /* We fix the number of computations that HDSearch performs 
+                   to study overheads when query compute is equal. Note this this affects
+                   accuracy. With our current setup, our responses are 93% accurate.
+                   You can increase the FIXEDCOMP or remove the following line to vary
+                   HDSearch's computations.*/
+                point_ids_for_all_bucket_servers[i][0].resize(FIXEDCOMP);
             }
             //map_fine_mutex[unique_request_id_value]->lock();
             response_count_down_map[unique_request_id_value].index_reply->set_get_point_ids_time(GetTimeInMicro() - start_time);

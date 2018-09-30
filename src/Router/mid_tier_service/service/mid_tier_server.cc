@@ -532,7 +532,11 @@ class LookupServiceClient {
             //map_fine_mutex[unique_request_id_value]->unlock();
 
             int lookup_srv_to_send_req_to = 0;
-            for(int i = 0; i < replication_cnt; i++) {
+            int replication_count = 1;
+            if (request_to_lookup_srv.operation() == 2) {
+                replication_count = replication_cnt;
+            }
+            for(int i = 0; i < replication_count; i++) {
                 lookup_srv_to_send_req_to = (SpookyHash::Hash32(key.c_str(), key.size(), 0) + i) % number_of_lookup_servers;
                 int router = (tid * number_of_lookup_servers) + lookup_srv_to_send_req_to;
 
