@@ -15,21 +15,145 @@ If you use this software in your work, we request that you cite the µSuite pape
 To install µSuite, please follow these steps (works on Debian):
 
 (1) Install GRPC:
-Install GRPC pre-requisites: _sudo apt-get install build-essential autoconf libtool curl cmake git pkg-config_
-_git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc_
+
+sudo apt-get install build-essential autoconf libtool curl cmake git pkg-config
+
+git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc
+
 cd grpc
+
 git submodule update --init
+
 make
+
 sudo make install
-Step out of the GRPC directory. 
+
+Step out of the GRPC directory.
+
 If you have any issues installing GRPC, refer to: https://github.com/grpc/grpc/blob/master/INSTALL.md)
 
 (2) Install Protobuf 3.0.0 or higher:
+
+wget https://github.com/google/protobuf/releases/download/v3.2.0/protobuf-cpp-3.2.0.tar.gz
+
+tar -xzvf protobuf-cpp-3.2.0.tar.gz
+
+cd protobuf-3.2.0
+
+./configure
+
+make
+
+make check
+
+sudo make install
+
+sudo ldconfig
+
+Step out of the protobuf directiry.
+
+If you have any issues installing Protobuf, refer to: https://github.com/protocolbuffers/protobuf/releases
+
+
+(3) Install OpenSSL and Intel's MKL:
+
+sudo apt-get install openssl
+
+sudo apt-get install libssl-dev
+
+wget http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/11306/l_mkl_2017.2.174.tgz
+
+tar xzvf l_mkl_2017.2.174.tgz
+
+cd l_mkl_*
+
+./install.sh   -> Follow the prompts that appear to install MKL.
+
+Step back into the MicroSuite directory.
+
+
+(4) Install FLANN:
+
+cd src/HDSearch/mid_tier_service
+
+mkdir build
+
+cd build
+
+cmake ..
+
+sudo make install
+
+make
+
+If you have any issues installing FLANN, please refer to: http://www.cs.ubc.ca/research/flann/uploads/FLANN/flann_manual-1.8.4.pdf and https://github.com/mariusmuja/flann/issues
+
+(5) Install MLPACK (MicroSuite uses MLPACK version 2.2.5):
+
+sudo apt-get install libmlpack-dev
+
+If you have any issues installing or running MLPACK, please refer to: https://github.com/mlpack/mlpack
+
+(6) Build HDSearch:
+
+cd src/HDSearch/protoc_files
+
+make  ---> It's fine if you have errors, just make sure that the "*.grpc.*" and "*pb.*" files get created.
+
+cd ../bucket_service/service
+
+make
+
+cd ../../mid_tier_service/service/
+
+make
+
+cd ../../load_generator/
+
+make  --> Open loop load generators are used for measuring latency and closed-loop load generators help measure throughput.
+
+Step back to the MicroSuite parent directory.
+
+(7) Build Router:
+
+cd src/Router/protoc_files
+
+make  ---> It's fine if you have errors, just make sure that the "*.grpc.*" and "*pb.*" files get created.
+
+cd ../lookup_service/service
+
+make
+
+cd ../../mid_tier_service/service/
+
+make
+
+cd ../../load_generator/
+
+make
+
+(8) Build Set Algebra:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 # Issues
 If you have any other issues with installation or running benchmarks, please raise an issue in this github repository or email akshitha@umich.edu.
+
+If you have issues with any of the third party software that MicroSuite uses, you will have to look up issues pertaining to that software; I may not be fully qualified to answer those questions.
 
 # Maintenance
 Frequent code or data pushes to this repository are likely. Please pull from this repository for the latest update.
