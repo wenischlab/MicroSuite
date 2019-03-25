@@ -107,7 +107,7 @@ If you have any issues installing or running MLPACK, please refer to: https://gi
 
 (6) **Build HDSearch:**
 
-``
+
 cd src/HDSearch/protoc_files
 
 make  ---> It's fine if you have errors, just make sure that the "*.grpc.*" and "*pb.*" files get created.
@@ -123,13 +123,13 @@ make
 cd ../../load_generator/
 
 make  --> Open loop load generators are used for measuring latency and closed-loop load generators help measure throughput.
-``
+
 
 Step back to the MicroSuite parent directory.
 
 (7) **Build Router:**
 
-``
+
 cd src/Router/protoc_files
 
 make  ---> It's fine if you have errors, just make sure that the "*.grpc.*" and "*pb.*" files get created.
@@ -145,12 +145,13 @@ make
 cd ../../load_generator/
 
 make
-``
+
+
 Step back to the MicroSuite parent directory.
 
 (8) **Build Set Algebra:**
 
-``
+
 cd src/SetAlgebra/protoc_files
 
 make  ---> It's fine if you have errors, just make sure that the "*.grpc.*" and "*pb.*" files get created.
@@ -166,12 +167,13 @@ make
 cd ../../load_generator/
 
 make
-``
+
+
 Step back to the MicroSuite parent directory.
 
 (8) **Build Recommend:**
 
-``
+
 cd src/Recommend/protoc_files
 
 make  ---> It's fine if you have errors, just make sure that the "*.grpc.*" and "*pb.*" files get created.
@@ -187,7 +189,8 @@ make
 cd ../../load_generator/
 
 make
-``
+
+
 Step back to the MicroSuite parent directory.
 
 # To Run MicroSuite
@@ -197,11 +200,11 @@ Note: Simply typing <./binary_file_name> for any of µSuite's microservices will
 
 *To run the leaf service:*
 
-``
+
 cd src/HDSearch/bucket_service/service
 
 ./bucket_server <dataset file path> <IP address:Port Number> <Mode 1 - read dataset from text file OR Mode 2 - read dataset from binary file <number of bucket server threads> <num of cores: -1 if you want all cores on the machine> <bucket server number> <number of bucket servers in the system>
-``
+
 
 Description of parameters:
 
@@ -218,18 +221,18 @@ Description of parameters:
 (6) number of bucket servers in the system -> this is the total number of bucket servers your set up has e.g., 1.
 
 *To run the mid-tier service:*
-``
+
 cd ../../mid_tier_service/service/
 
 ./mid_tier_server <num_hash_tables> <hash_table_key_length> <num_multi_probe_levels> <number_of_bucket_servers> <file containing bucket server IPs> <dataset file path> <mode number: 1 - read dataset from text file, 2 - binary file> <index server IP address> <number of network poller threads> <number of dispatch threads> <number of async response threads> <get profile stats>
-``
+
 Description of parameters:
 
 (1), (2), (3), i.e., num_hash_tables, hash_table_key_length, num_multi_probe_levels are all FLANN parameters. Please refer to the FLANN paper (https://www.cs.ubc.ca/research/flann/) for details on how they must be set. You could try: num_hash_tables = 1, hash_table_key_length = 13, num_multi_probe_levels = 1 but note that these parameters must be set depending on what you are trying to do.
 
-number_of_bucket_servers -> Number of bucket servers that the mid-tier must contact. e.g., 1
+(4) number_of_bucket_servers -> Number of bucket servers that the mid-tier must contact. e.g., 1
 
-file containing bucket server IPs -> Create a .txt file containing bucket server IPs and port number (for all bucket servers you launched in your system) in the following format:
+(5) file containing bucket server IPs -> Create a .txt file containing bucket server IPs and port number (for all bucket servers you launched in your system) in the following format:
 ``
 127.0.0.1:50051
 127.0.0.1:50052
@@ -238,30 +241,30 @@ file containing bucket server IPs -> Create a .txt file containing bucket server
 ``
 and pass the file path as this argument.
 
-dataset file path -> ~/MicroSuite/datasets/HDSearch/image_feature_vectors.dat
+(6) dataset file path -> ~/MicroSuite/datasets/HDSearch/image_feature_vectors.dat
 
-mode number: 1 - read dataset from text file, 2 - binary file -> Set as "2"
+(7) mode number: 1 - read dataset from text file, 2 - binary file -> Set as "2"
 
-index server IP address -> ID address and port number of the mid-tier server that you are trying to launch here e.g., 127.0.0.1:50050
+(8) index server IP address -> ID address and port number of the mid-tier server that you are trying to launch here e.g., 127.0.0.1:50050
 
-number of network poller threads -> Number of threads that must pick up requests from the front-end or load generator e.g., 1
+(9) number of network poller threads -> Number of threads that must pick up requests from the front-end or load generator e.g., 1
 
-number of dispatch threads -> Number of worker threads that requests are dispatched to e.g., 4
+(10) number of dispatch threads -> Number of worker threads that requests are dispatched to e.g., 4
 
-number of async response threads -> number of threads that must pick up responses that are sent by the leaves e.g., 4
+(11) number of async response threads -> number of threads that must pick up responses that are sent by the leaves e.g., 4
 
-get profile stats -> If you want to turn on perf monitoring (this is not currently supported). Please input "0".
+(12) get profile stats -> If you want to turn on perf monitoring (this is not currently supported). Please input "0".
 
 *To run the load generator:*
-``
+
 cd ../../load_generator/
-``
+
 
 Run ``load_generator_open_loop`` if you want to measure latency and ``load_generator_closed_loop`` if you want to measure throughput.
 
-``
+
 ./load_generator_open_loop <queries file path> <K-NN result file path> <number_of_nearest_neighbors> <Time to run the program> <QPS> <IP to bind to> <timing file name> <QPS file name> <Util file name>
-`` 
+
 
 Description of parameters:
 
@@ -282,6 +285,32 @@ Description of parameters:
 (8) QPS file name: This is for future support. For now, enter a dummy file name.
 
 (9) Util file name: This is for future support. For now, enter a dummy file name.
+
+Running the other MicroSuite services follow the same format as for HDSearch described above. The differences in format are listed below:
+
+(2) **To run Router:**
+
+A memcached server must be launched for the lookup_server to communicate with. Details on how to launch a memcached server can be found here: https://kyup.com/tutorials/install-use-memcache/
+
+./lookup_server (leaf): parameter "Memcached port number to connect to" refers to the memcache server's port number that the lookup_server must communicate with.
+
+./mid_tier_server : parameter "replication cnt" refers to the number of servers that you want in the replicated pool e.g., if you have 4 lookup servers, you may want _set_ requests to get routed to 3 servers in a replicated pool.
+
+./load_generator_closed_loop: parameters "queries file path" -> ~/MicroSuite/datasets/Router/twitter_requests_query_set.dat, QPS -> a high number of outstanding requests in-flight to get saturation throughput, get ratio and set ratio -> are the raio of get and set requests e.g., 1:1 is entered as 1 1
+
+(3) **To run Set Algebra:**
+
+./intersection_server (leaf): parameter <path to dataset> -> ls ~/MicroSuite/datasets/SetAlgebra/wordIDs_mapped_to_posting_lists.txt (the available tar file must first be extracted on your machine). 
+
+Note that you need to create shards of this entire data set depending on the number of leaf servers you have in your set up. e.g., shard0 must be fed as input to leaf server0
+
+./load_generator_open_loop : parameter <queries file path> -> ~/MicroSuite/datasets/SetAlgebra/query_set.txt 
+  
+(3) **To run Recommend:**
+
+./cf_server (leaf) : parameters: <dataset file path> -> user_to_movie_ratings.csv (Note that you need to create shards of this entire data set depending on the number of leaf servers you have in your set up. e.g., shard0 must be fed as input to leaf server0)
+  
+./load_generator_open_loop : parameter: <queries file path> -> ~/MicroSuite/datasets/Recommend/query_set.csv
 
 # Issues
 If you have issues with any of the third party software that MicroSuite uses, you will have to look up issues pertaining to that software; I may not be fully qualified to answer those questions.
