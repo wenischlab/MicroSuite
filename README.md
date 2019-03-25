@@ -14,9 +14,11 @@ If you use this software in your work, we request that you cite the µSuite pape
 # Installation
 To install µSuite, please follow these steps (works on Debian):
 
-(1) *Install GRPC:*
+(1) **Install GRPC:**
 
+```
 sudo apt-get install build-essential autoconf libtool curl cmake git pkg-config
+```
 
 git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc
 
@@ -32,7 +34,7 @@ Step out of the GRPC directory.
 
 If you have any issues installing GRPC, refer to: https://github.com/grpc/grpc/blob/master/INSTALL.md)
 
-(2) Install Protobuf 3.0.0 or higher:
+(2) **Install Protobuf 3.0.0 or higher:**
 
 wget https://github.com/google/protobuf/releases/download/v3.2.0/protobuf-cpp-3.2.0.tar.gz
 
