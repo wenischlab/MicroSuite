@@ -14,7 +14,7 @@ If you use this software in your work, we request that you cite the µSuite pape
 # Installation
 To install µSuite, please follow these steps (works on Debian):
 
-(1) Install GRPC:
+(1) *Install GRPC:*
 
 sudo apt-get install build-essential autoconf libtool curl cmake git pkg-config
 
