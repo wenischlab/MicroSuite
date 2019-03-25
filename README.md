@@ -12,11 +12,24 @@
 If you use this software in your work, we request that you cite the µSuite paper ("μSuite: A Benchmark Suite for Microservices", Akshitha Sriraman and Thomas F. Wenisch, IEEE International Symposium on Workload Characterization, September 2018), and that you send us a citation of your work.
 
 # Installation
-To install µSuite, run the following command from the home directory:
-$ python install.py
+To install µSuite, please follow these steps (works on Debian):
+
+(1) Install GRPC:
+Install GRPC pre-requisites: _sudo apt-get install build-essential autoconf libtool curl cmake git pkg-config_
+_git clone -b $(curl -L http://grpc.io/release) https://github.com/grpc/grpc_
+cd grpc
+git submodule update --init
+make
+sudo make install
+Step out of the GRPC directory. 
+If you have any issues installing GRPC, refer to: https://github.com/grpc/grpc/blob/master/INSTALL.md)
+
+(2) Install Protobuf 3.0.0 or higher:
+
+
 
 # Issues
-If you have issues with installation or running benchmarks, please raise an issue in this github repository or email akshitha@umich.edu
+If you have any other issues with installation or running benchmarks, please raise an issue in this github repository or email akshitha@umich.edu.
 
 # Maintenance
 Frequent code or data pushes to this repository are likely. Please pull from this repository for the latest update.
