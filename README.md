@@ -105,6 +105,9 @@ sudo apt-get install libmlpack-dev
 
 If you have any issues installing or running MLPACK, please refer to: https://github.com/mlpack/mlpack
 
+The datasets referred to in the following steps have temporarily been relocated here - https://akshithasriraman.eecs.umich.edu/dataset/
+Test sets for the load generator can be created as large as you want them to be by stripping away a part of the data set.
+
 (6) **Build HDSearch:**
 
 
